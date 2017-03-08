@@ -6,8 +6,10 @@ html(lang="en")
     meta(name="viewport", content="width=device-width, initial-scale=1")
     - title = ["SDO6E Remote Desktop Services", "Home"]
     title=  title.join(" | ")
-    link(rel="stylesheet", href="stylesheets/application.css")
     link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u", crossorigin="anonymous")
+    link(href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css", rel="stylesheet")
+    link(rel="stylesheet", href="stylesheets/application.css")
+
     <!--[if lt IE 9]>
     script(src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js")
     script(src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js")
@@ -21,18 +23,20 @@ html(lang="en")
         div
           ul
             a(href="https://n30-oats-ape-util-02.tfayd.com:8081")
-              button.btn.btn-success
+              button.nooks.btn-lg.btn.btn-success
                 span SDO 6E Nook 2
             a(href="https://n30-oats-ape-util-03.tfayd.com:8443/SDO6E-2/")
-              button.btn.btn-danger
+            button.nooks.busy.btn.btn-lg.btn-danger.disabled(title="In-use")
                 span SDO 6E Nook 3
             span#disco-spacer
-            button.btn.btn-default Disconnect Enable
+            input#disco(type="checkbox", data-toggle="toggle", data-onstyle="danger", data-on="Disconnect<br>Enable", data-off="Disconnect<br>Safe")
+
       #info
         p.
           Made with #[a(href="//nodejs.org") Node.js], #[a(href="//jquery.com") jQuery],
           #[a(href="//pugjs.org") Pug], and #[a(href="//getbootstrap.com") Bootstrap]
-          - #[a(href="//nbcunicareers.com") NBCUniversal] in Dec-2016
-    script(type="text/javascript", src="//code.jquery.com/jquery.min.js")
+          - #[a(href="//nbcunicareers.com") NBCUniversal] in Dec-2017
+    script(type="text/javascript", src="//code.jquery.com/jquery-2.2.4.min.js")
     script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js", integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa", crossorigin="anonymous")
+    script(type="text/javascript", src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js")
     script(type="text/javascript", src="javascripts/application.js")
