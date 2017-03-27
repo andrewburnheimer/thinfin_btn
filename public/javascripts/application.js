@@ -3,7 +3,7 @@ var freeBusyTogglerTimerId;
 $(window).load(function(){
 $('#disco').change(function() {
   if($(this).prop('checked')){
-      toggleBusyNooksIntoFreeUpState();
+    toggleBusyNooksIntoFreeUpState();
 
     freeBusyTogglerTimerId = setTimeout(function myFunction() {
       $('#disco').bootstrapToggle('off');
@@ -17,16 +17,21 @@ $('#disco').change(function() {
 });
 
 function toggleBusyNooksIntoFreeUpState() {
-  $('.nooks.busy').removeClass('disabled');
-  $('.nooks.busy').prop("title", "");
-  var existing = $('.nooks.busy span').text();
-  $('.nooks.busy span').text("Free up " + existing);
+  $.each($('.nooks.busy'), function(index, nook_btn) {
+    $(nook_btn).removeClass('disabled')
+    $(nook_btn).prop("title", "");
+    var nook_btn_span = $(nook_btn).children("span");
+    $(nook_btn_span).text("Free up " + $(nook_btn_span).text());
+  })
 };
 
 function toggleFreeUpNooksIntoBusyState() {
-  var existing = $('.nooks.busy span').text();
-  existing = existing.replace("Free up ", "");
-  $('.nooks.busy span').text(existing);
-  $('.nooks.busy').addClass('disabled')
-  $('.nooks.busy').prop("title", "In-use");
+  $.each($('.nooks.busy'), function(index, nook_btn) {
+    var nook_btn_span = $(nook_btn).children("span");
+    var existing = $(nook_btn_span).text();
+    existing = existing.replace("Free up ", "");
+    $(nook_btn_span).text(existing);
+    $(nook_btn).addClass('disabled')
+    $(nook_btn).prop("title", "In-use");
+  })
 };
