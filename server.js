@@ -62,9 +62,8 @@ http.createServer(function(request, response) {
     fs.readFile("public" + pathname, function (err, content) {
       if(!err) {
         response.statusCode = 200;
-        var compiledContent = function(){ return content };
         response.setHeader('Content-Type', typeHdrForFileExt(pathname));
-        response.end(compiledContent());
+        response.end(content);
       } else if(err.code == "ENOENT"){
         response.statusCode = 404;
         response.setHeader('Content-Type', 'text/html');
@@ -82,9 +81,9 @@ http.createServer(function(request, response) {
     fs.readFile("app/views" + pathname + ".pug", function (err, content) {
       if(!err) {
         response.statusCode = 200;
-        var compiledContent = pug.compile(content);
+        var compiledFunction = pug.compile(content);
 
-        response.end(compiledContent());
+        response.end(compiledFunction({ btnColor: "danger" }));
       } else if(err.code == "ENOENT"){
         response.statusCode = 404;
         errorResponse = notFoundErrorResponse("View");
