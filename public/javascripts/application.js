@@ -7,6 +7,10 @@ $(window).load(function(){
 
   logToWindow("Page visited, log started")
 
+  setInterval(function(){
+    updateRoomControls();
+  },3000)
+
   $('#disco').change(function() {
     if($(this).prop('checked')){
       allBusyNooksIntoFreeUpState();
@@ -34,23 +38,37 @@ $(window).load(function(){
 
 });
 
+function updateRoomControls() {
+  $.each($('.nooks'), function(index, nookBtn) {
+    var nookBtnSpan = $(nookBtn).children("span");
+    var nookName = $(nookBtnSpan).text();
+
+    jQuery.get("/roomStatus.json", { room: nookName }, function( results ) {
+      
+    })
+    .fail(function(data, sts) {
+      logToWindow("ERROR: Received HTTP " + data.status + " " + data.statusText + " for " + nookName);
+    });
+  });
+}
+
 function allBusyNooksIntoFreeUpState() {
-  $.each($('.nooks.busy'), function(index, nook_btn) {
-    $(nook_btn).removeClass('disabled')
-    $(nook_btn).prop("title", "");
-    var nook_btn_span = $(nook_btn).children("span");
-    $(nook_btn_span).text("Free up " + $(nook_btn_span).text());
+  $.each($('.nooks.busy'), function(index, nookBtn) {
+    $(nookBtn).removeClass('disabled')
+    $(nookBtn).prop("title", "");
+    var nookBtnSpan = $(nookBtn).children("span");
+    $(nookBtnSpan).text("Free up " + $(nookBtnSpan).text());
   })
 };
 
 function allFreeUpNooksIntoBusyState() {
-  $.each($('.nooks.busy'), function(index, nook_btn) {
-    var nook_btn_span = $(nook_btn).children("span");
-    var existing = $(nook_btn_span).text();
+  $.each($('.nooks.busy'), function(index, nookBtn) {
+    var nookBtnSpan = $(nookBtn).children("span");
+    var existing = $(nookBtnSpan).text();
     existing = existing.replace("Free up ", "");
-    $(nook_btn_span).text(existing);
-    $(nook_btn).addClass('disabled')
-    $(nook_btn).prop("title", "In-use");
+    $(nookBtnSpan).text(existing);
+    $(nookBtn).addClass('disabled')
+    $(nookBtn).prop("title", "In-use");
   })
 };
 

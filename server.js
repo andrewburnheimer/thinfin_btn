@@ -2,6 +2,7 @@ var http = require("http");
 var fs = require("fs");
 var url = require("url");
 var pug = require("pug");
+const querystring = require('querystring');
 
 var typeHdrForFileExt = function(pathname){
   fileExtRegExp = RegExp("\\.[^.]+$");
@@ -57,9 +58,26 @@ http.createServer(function(request, response) {
   var pathname = reqUrl.pathname;
   if(pathname == "/") { pathname = "/index"; }
 
+  apiRegExp = RegExp("\\.json$");
   fileExtRegExp = RegExp("\\.");
-  if(fileExtRegExp.test(pathname)){
 
+  if(apiRegExp.test(pathname)){
+    if(pathname == "/roomStatus.json"){
+      var query = querystring.parse(reqUrl.query);
+      result = new Object
+      result.room = query.room;
+      result.status = "unknown"; /* XXX Implement API here:  */
+      response.statusCode = 200;
+      response.setHeader("Content-Type", "application/json");
+      response.end(JSON.stringify(result));
+    } else {
+      response.statusCode = 404;
+      response.setHeader('Content-Type', 'text/html');
+      errorResponse = notFoundErrorResponse("Endpoint");
+      response.end(errorResponse());
+    }
+
+  } else if(fileExtRegExp.test(pathname)){
     fs.readFile("public" + pathname, function (err, content) {
       if(!err) {
         response.statusCode = 200;
@@ -87,6 +105,9 @@ http.createServer(function(request, response) {
         fs.readFile("facilities.json", function (err, content) {
           if(!err){
             facilities = eval("(" + content + ")");
+            for (var idx in facilities) {
+              facilities[idx].url = facilities[idx].remoteScheme + "://" + facilities[idx].host + ":" + facilities[idx].remotePort + "/" + facilities[idx].remotePath
+            }
           } else {
             console.log("Error reading facilities.json: " + err.toString());
           }
