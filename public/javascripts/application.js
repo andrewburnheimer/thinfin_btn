@@ -1,19 +1,22 @@
 var freeBusyTogglerTimerId;
 
 $(window).load(function(){
-$('#disco').change(function() {
-  if($(this).prop('checked')){
-    toggleBusyNooksIntoFreeUpState();
+  $(".noscriptmsg").hide();
+  $('#disco').change(function() {
+    if($(this).prop('checked')){
+      toggleBusyNooksIntoFreeUpState();
 
-    freeBusyTogglerTimerId = setTimeout(function myFunction() {
-      $('#disco').bootstrapToggle('off');
+      freeBusyTogglerTimerId = setTimeout(function myFunction() {
+        $('#disco').bootstrapToggle('off');
+        toggleFreeUpNooksIntoBusyState();
+        }, 5000);
+    } else {
+      clearTimeout(freeBusyTogglerTimerId);
       toggleFreeUpNooksIntoBusyState();
-      }, 5000);
-  } else {
-    clearTimeout(freeBusyTogglerTimerId);
-    toggleFreeUpNooksIntoBusyState();
-  }
-  });
+    }
+    });
+
+  $('.nooklink.disabled').on('click', function(e) { e.preventDefault(); });
 });
 
 function toggleBusyNooksIntoFreeUpState() {

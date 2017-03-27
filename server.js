@@ -31,6 +31,7 @@ http.createServer(function(request, response) {
   var method = request.method;
   var reqUrl = url.parse(request.url);
   var body = [];
+  var facilities = [];
 
   request.on("error", function(err) {
     console.error(err);
@@ -83,7 +84,15 @@ http.createServer(function(request, response) {
         response.statusCode = 200;
         var compiledFunction = pug.compile(content);
 
-        response.end(compiledFunction({ btnColor: "danger" }));
+        fs.readFile("facilities.json", function (err, content) {
+          if(!err){
+            facilities = eval("(" + content + ")");
+          } else {
+            console.log("Error reading facilities.json: " + err.toString());
+          }
+
+          response.end(compiledFunction({ facilities: facilities }));
+        })
       } else if(err.code == "ENOENT"){
         response.statusCode = 404;
         errorResponse = notFoundErrorResponse("View");
