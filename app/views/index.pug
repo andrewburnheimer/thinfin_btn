@@ -36,11 +36,19 @@ html(lang="en")
               each facility in facilities
                 li
                   a.nooklink.disabled(href=facility.url, aria-disabled="true", tabindex="-1")
-                    button.nooks.busy.btn-lg.btn.btn-danger.disabled(title="In-use", disabled="disabled")
+                    button.nooks.maintenance.btn-lg.btn.btn-danger.disabled(title="Unable to reach StudioSentry", disabled="disabled")
                       span #{facility.name}
               li
                 span#disco-spacer
                 input#disco(type="checkbox", data-toggle="toggle", data-onstyle="danger", data-on="Disconnect<br>Enable", data-off="Disconnect<br>Safe")
+
+
+      #log
+        h4 Activity Log
+        #log-area
+          textarea#log-window(readonly="readonly")
+          label.btn.btn-default#copy-btn(title="Copy to clipboard" for="log-window")
+            i.glyphicon.glyphicon-copy
 
       #info
         p.

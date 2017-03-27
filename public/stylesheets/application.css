@@ -28,3 +28,10 @@ a:hover {
 #facility-list li {
   display: inline;
 }
+
+#log-window {
+  width: 70%;
+  height: 8em;
+  margin: 0 auto 0 auto;
+  vertical-align: bottom;
+}
