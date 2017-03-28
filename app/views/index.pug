@@ -36,7 +36,7 @@ html(lang="en")
               each facility in facilities
                 li
                   a.nooklink.disabled(href=facility.url, aria-disabled="true", tabindex="-1")
-                    button.nooks.maintenance.btn-lg.btn.btn-danger.disabled(title="Unable to reach StudioSentry", disabled="disabled")
+                    button.nooks.unknown.btn-lg.btn.btn-danger.disabled(title="Unable to reach StudioSentry", disabled="disabled")
                       span #{facility.name}
               li
                 span#disco-spacer
