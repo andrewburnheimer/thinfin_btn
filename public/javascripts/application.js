@@ -7,6 +7,7 @@ $(window).load(function(){
 
   logToWindow("Page visited, log started")
 
+  updateRoomControls();
   setInterval(function(){
     updateRoomControls();
   },3000)
@@ -40,40 +41,60 @@ $(window).load(function(){
 
 function updateRoomControls() {
   $.each($('.nooks'), function(index, nookBtn) {
-    var nookBtnSpan = $(nookBtn).children("span");
-    var nookName = $(nookBtnSpan).text();
+    var nookBtn = $(nookBtn);
+    var nookName = $(nookBtn).attr("name");
 
-    jQuery.get("/roomStatus.json", { room: nookName }, function( results ) {
-      if(results.status == "busy"){
-        roomIntoBusyState(nookName);
-      } else if (results.status == "available") {
-        roomIntoAvailableState(nookName);
-      } else {
-        roomIntoUnknownState(nookName);
-      }
-    })
-    .fail(function(data, sts) {
-      logToWindow("ERROR: Received HTTP " + data.status + " " + data.statusText + " for " + nookName);
-    });
+    if(!nookBtn.hasClass("free-up")){
+      jQuery.get("/roomStatus.json", { room: nookName }, function( results ) {
+        if(results.status == "busy"){
+          roomIntoBusyState(nookName);
+        } else if (results.status == "available") {
+          roomIntoAvailableState(nookName);
+        } else {
+          roomIntoUnknownState(nookName);
+        }
+      })
+      .fail(function(data, sts) {
+        logToWindow("ERROR: Received HTTP " + data.status + " " + data.statusText + " for " + nookName);
+      });
+    }
   });
 }
 
 function allBusyNooksIntoFreeUpState() {
   $.each($('.nooks.busy'), function(index, nookBtn) {
+    var nookAnchor = $(nookBtn).parent();
+    nookAnchor.removeClass('disabled');
+    nookAnchor.attr("aria-disabled", "false");
+    nookAnchor.removeAttr('tabindex');
+    nookAnchor.unbind('click');
+
     $(nookBtn).removeClass('disabled')
-    $(nookBtn).prop("title", "");
+    $(nookBtn).removeClass('busy');
+    $(nookBtn).addClass('free-up');
+    $(nookBtn).prop("title", "Force a disconnect of the RemoteApp user in this facility");
+    $(nookBtn).prop('disabled', false);
     var nookBtnSpan = $(nookBtn).children("span");
     $(nookBtnSpan).text("Free up " + $(nookBtnSpan).text());
   })
 };
 
 function allFreeUpNooksIntoBusyState() {
-  $.each($('.nooks.busy'), function(index, nookBtn) {
+  $.each($('.nooks.free-up'), function(index, nookBtn) {
+    var nookAnchor = $(nookBtn).parent();
+    nookAnchor.on('click', function(e) { e.preventDefault(); });
+    nookAnchor.addClass('disabled');
+    nookAnchor.attr("aria-disabled", "true");
+    nookAnchor.removeAttr('tabindex');
+
     var nookBtnSpan = $(nookBtn).children("span");
     var existing = $(nookBtnSpan).text();
     existing = existing.replace("Free up ", "");
     $(nookBtnSpan).text(existing);
+    $(nookBtn).removeClass('free-up');
     $(nookBtn).addClass('disabled')
+    $(nookBtn).addClass('busy');
+    $(nookBtn).prop("disabled", "disabled");
     $(nookBtn).prop("title", "In-use");
   })
 };
@@ -82,8 +103,8 @@ function roomIntoBusyState(name) {
   var roomAnchor = $("#facility-list li :contains(" + name + ")").first()
   roomAnchor.on('click', function(e) { e.preventDefault(); });
   roomAnchor.addClass('disabled');
-  roomAnchor.prop('aria-disabled', 'true');
-  roomAnchor.prop('tabindex', '-1');
+  roomAnchor.attr('aria-disabled', 'true');
+  roomAnchor.attr('tabindex', '-1');
 
   roomButton = roomAnchor.children("button");
   if(!roomButton.hasClass("busy")){
@@ -105,7 +126,7 @@ function roomIntoBusyState(name) {
 function roomIntoAvailableState(name) {
   var roomAnchor = $("#facility-list li :contains(" + name + ")").first()
   roomAnchor.removeClass('disabled');
-  roomAnchor.prop("aria-disabled", false);
+  roomAnchor.attr("aria-disabled", "false");
   roomAnchor.removeAttr('tabindex');
   roomAnchor.unbind('click');
 
@@ -129,8 +150,8 @@ function roomIntoUnknownState(name) {
   var roomAnchor = $("#facility-list li :contains(" + name + ")").first()
   roomAnchor.on('click', function(e) { e.preventDefault(); });
   roomAnchor.addClass('disabled');
-  roomAnchor.prop('aria-disabled', 'true');
-  roomAnchor.prop('tabindex', '-1');
+  roomAnchor.attr('aria-disabled', 'true');
+  roomAnchor.attr('tabindex', '-1');
 
   roomButton = roomAnchor.children("button");
   if(!roomButton.hasClass("unknown")){
