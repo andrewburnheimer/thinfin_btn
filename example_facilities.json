@@ -2,17 +2,19 @@
   {
     "name": "SDO 6E Room 3",
     "host": "n30-oats-ape-util-03.tfayd.com",
+    "sentryPort": 8888,
     "remoteScheme": "https",
+    "remoteHost": "sdo6econtrol.tfayd.com",
     "remotePort": 8443,
-    "remotePath": "SDO6E-3/",
-    "sentryPort": 8888
+    "remotePath": "SDO6E-3/"
   },
   {
     "name": "SDO 6E Room 2",
     "host": "n30-oats-ape-util-03.tfayd.com",
+    "sentryPort": 8888,
     "remoteScheme": "https",
+    "remoteHost": "sdo6econtrol.tfayd.com",
     "remotePort": 8443,
-    "remotePath": "SDO6E-2/",
-    "sentryPort": 8888
+    "remotePath": "SDO6E-2/"
   }
 ]

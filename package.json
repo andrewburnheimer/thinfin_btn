@@ -1,6 +1,6 @@
 {
   "name": "thinfin_btn",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Thinfinity Button Panel",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,6 +9,7 @@
   "license": "Apache 2.0",
   "private": true,
   "dependencies": {
-    "pug": "^2.0.0"
+    "pug": "^2.0.0",
+    "unirest": "^0.5.1"
   }
 }

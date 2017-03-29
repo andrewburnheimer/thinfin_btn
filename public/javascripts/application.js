@@ -67,14 +67,29 @@ function allBusyNooksIntoFreeUpState() {
     nookAnchor.removeClass('disabled');
     nookAnchor.attr("aria-disabled", "false");
     nookAnchor.removeAttr('tabindex');
+    var nookBtnSpan = $(nookBtn).children("span");
+    var nookName = nookBtnSpan.text();
     nookAnchor.unbind('click');
+    nookAnchor.on('click', function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: "/roomRemoteAppUser.json" + '?' + $.param({"room": nookName}),
+        type: "DELETE",
+        success: function(result) {
+          logToWindow("Freed-up " + nookName);
+        },
+        error: function(data, sts) { 
+          logToWindow("ERROR: Received HTTP " + data.status + " " + data.statusText + " when freeing-up " + nookName);
+        }
+      });
+    });
 
     $(nookBtn).removeClass('disabled')
     $(nookBtn).removeClass('busy');
     $(nookBtn).addClass('free-up');
     $(nookBtn).prop("title", "Force a disconnect of the RemoteApp user in this facility");
     $(nookBtn).prop('disabled', false);
-    var nookBtnSpan = $(nookBtn).children("span");
+
     $(nookBtnSpan).text("Free up " + $(nookBtnSpan).text());
   })
 };
@@ -82,6 +97,7 @@ function allBusyNooksIntoFreeUpState() {
 function allFreeUpNooksIntoBusyState() {
   $.each($('.nooks.free-up'), function(index, nookBtn) {
     var nookAnchor = $(nookBtn).parent();
+    nookAnchor.unbind('click');
     nookAnchor.on('click', function(e) { e.preventDefault(); });
     nookAnchor.addClass('disabled');
     nookAnchor.attr("aria-disabled", "true");

@@ -134,6 +134,63 @@ http.createServer(function(request, response) {
         response.setHeader("Content-Type", "application/json");
         response.end(JSON.stringify(result));
       }
+    } else if(pathname == "/roomRemoteAppUser.json"){
+      var query = querystring.parse(reqUrl.query);
+      var result = new Object
+
+      if(method == "DELETE") {
+        if(query.hasOwnProperty("room")) {
+
+          result.room = query.room;
+
+          var facility = new Object;
+          fs.readFile("facilities.json", function (err, content) {
+            array = eval("(" + content + ")");
+            
+            for (var i = 0, len = array.length; i < len; i++) {
+              if(array[i].name == result.room) {
+                facility = array[i];
+                break;
+              }
+            }
+            if(facility.hasOwnProperty("host")){
+
+              unirest.delete("http://" + facility.host + ":" + facility.sentryPort + "/KickRemoteAppUser")
+              .end(function (sentryResponse) {
+                if(sentryResponse.ok) {
+                  response.statusCode = 204;
+                } else {
+                  response.statusCode = 500;
+                  result.status = "INTERNAL SERVER ERROR";
+                  console.log("ERROR 500, " + query.room + " StudioSentry returning: HTTP " + sentryResponse.statusCode);
+                }
+
+                response.setHeader("Content-Type", "application/json");
+                response.end(JSON.stringify(result));
+              });
+            } else {
+              response.statusCode = 404;
+              result.status = "RESOURCE NOT FOUND";
+              console.log("ERROR 404, resource " + result.room + " not found in facilities.json");
+              response.setHeader("Content-Type", "application/json");
+              response.end(JSON.stringify(result));
+            }
+          });
+
+        } else {
+          response.statusCode = 400;
+          result.status = "BAD REQUEST NO PARAMS";
+          console.log("ERROR 400, no query params sent for " + pathname);
+          response.setHeader("Content-Type", "application/json");
+          response.end(JSON.stringify(result));
+        }
+      } else {
+        response.statusCode = 405;
+        result.status = "METHOD NOT ALLOWED";
+        console.log("ERROR 405, " + method + " not allowed for " + pathname);
+        response.setHeader("Content-Type", "application/json");
+        response.end(JSON.stringify(result));
+      }
     } else {
       response.statusCode = 404;
       result = new Object
@@ -172,7 +229,7 @@ http.createServer(function(request, response) {
           if(!err){
             facilities = eval("(" + content + ")");
             for (var idx in facilities) {
-              facilities[idx].url = facilities[idx].remoteScheme + "://" + facilities[idx].host + ":" + facilities[idx].remotePort + "/" + facilities[idx].remotePath
+              facilities[idx].url = facilities[idx].remoteScheme + "://" + facilities[idx].remoteHost + ":" + facilities[idx].remotePort + "/" + facilities[idx].remotePath
             }
           } else {
             console.log("Error reading facilities.json: " + err.toString());
