@@ -65,7 +65,7 @@ http.createServer(function(request, response) {
   if(apiRegExp.test(pathname)){
     if(pathname == "/roomStatus.json"){
       var query = querystring.parse(reqUrl.query);
-      result = new Object
+      var result = new Object
 
       if(method == "GET") {
         if(query.hasOwnProperty("room")) {

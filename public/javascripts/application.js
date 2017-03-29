@@ -44,7 +44,13 @@ function updateRoomControls() {
     var nookName = $(nookBtnSpan).text();
 
     jQuery.get("/roomStatus.json", { room: nookName }, function( results ) {
-      
+      if(results.status == "busy"){
+        roomIntoBusyState(nookName);
+      } else if (results.status == "available") {
+        roomIntoAvailableState(nookName);
+      } else {
+        roomIntoUnknownState(nookName);
+      }
     })
     .fail(function(data, sts) {
       logToWindow("ERROR: Received HTTP " + data.status + " " + data.statusText + " for " + nookName);
@@ -70,6 +76,76 @@ function allFreeUpNooksIntoBusyState() {
     $(nookBtn).addClass('disabled')
     $(nookBtn).prop("title", "In-use");
   })
+};
+
+function roomIntoBusyState(name) {
+  var roomAnchor = $("#facility-list li :contains(" + name + ")").first()
+  roomAnchor.on('click', function(e) { e.preventDefault(); });
+  roomAnchor.addClass('disabled');
+  roomAnchor.prop('aria-disabled', 'true');
+  roomAnchor.prop('tabindex', '-1');
+
+  roomButton = roomAnchor.children("button");
+  if(!roomButton.hasClass("busy")){
+    logToWindow(name + " is now busy");
+
+    roomButton.removeClass('unknown');
+    roomButton.removeClass('available');
+    roomButton.addClass('disabled');
+    roomButton.addClass('busy');
+    roomButton.prop('disabled', 'disabled');
+    roomButton.removeClass('btn-warning');
+    roomButton.removeClass('btn-success');
+    roomButton.addClass('btn-danger');
+    roomButton.prop("title", "In-use");
+  }
+};
+
+
+function roomIntoAvailableState(name) {
+  var roomAnchor = $("#facility-list li :contains(" + name + ")").first()
+  roomAnchor.removeClass('disabled');
+  roomAnchor.prop("aria-disabled", false);
+  roomAnchor.removeAttr('tabindex');
+  roomAnchor.unbind('click');
+
+  roomButton = roomAnchor.children("button");
+  if(!roomButton.hasClass("available")){
+    logToWindow(name + " is now available");
+
+    roomButton.removeClass('disabled');
+    roomButton.removeClass('unknown');
+    roomButton.removeClass('busy');
+    roomButton.prop('disabled', false);
+    roomButton.addClass('available');
+    roomButton.removeClass('btn-warning');
+    roomButton.removeClass('btn-danger');
+    roomButton.addClass('btn-success');
+    roomButton.prop("title", "Available");
+  }
+};
+
+function roomIntoUnknownState(name) {
+  var roomAnchor = $("#facility-list li :contains(" + name + ")").first()
+  roomAnchor.on('click', function(e) { e.preventDefault(); });
+  roomAnchor.addClass('disabled');
+  roomAnchor.prop('aria-disabled', 'true');
+  roomAnchor.prop('tabindex', '-1');
+
+  roomButton = roomAnchor.children("button");
+  if(!roomButton.hasClass("unknown")){
+    logToWindow(name + " is now unreachable");
+
+    roomButton.removeClass('busy');
+    roomButton.removeClass('available');
+    roomButton.addClass('disabled');
+    roomButton.addClass('unknown');
+    roomButton.prop('disabled', 'disabled');
+    roomButton.removeClass('btn-success');
+    roomButton.removeClass('btn-danger');
+    roomButton.addClass('btn-warning');
+    roomButton.prop("title", "Unable to reach StudioSentry");
+  }
 };
 
 function logToWindow(msg){
