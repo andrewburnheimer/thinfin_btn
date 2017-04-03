@@ -87,7 +87,7 @@ function allBusyNooksIntoFreeUpState() {
     $(nookBtn).removeClass('disabled')
     $(nookBtn).removeClass('busy');
     $(nookBtn).addClass('free-up');
-    $(nookBtn).prop("title", "Force a disconnect of the RemoteApp user in this facility");
+    $(nookBtn).prop("title", "Force a disconnect of the user in this facility");
     $(nookBtn).prop('disabled', false);
 
     $(nookBtnSpan).text("Free up " + $(nookBtnSpan).text());

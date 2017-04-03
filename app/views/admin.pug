@@ -4,7 +4,7 @@ html(lang="en")
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    - title = ["30 Rock 6th Floor Remote Studio Services", "Home"]
+    - title = ["30 Rock 6th Floor Remote Studio Services", "Admin"]
     title=  title.join(" | ")
     link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u", crossorigin="anonymous")
     link(href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css", rel="stylesheet")
@@ -38,8 +38,12 @@ html(lang="en")
                   a.nooklink.disabled(href=facility.url, aria-disabled="true", tabindex="-1")
                     button.nooks.unknown.btn-lg.btn.btn-warning.disabled(name=facility.name, title="Unable to reach StudioSentry", disabled="disabled")
                       span #{facility.name}
+              li
+                span#disco-spacer
+                input#disco(type="checkbox", data-toggle="toggle", data-onstyle="danger", data-on="Disconnect<br>Enabled", data-off="Disconnect")
 
-      #log(style="display: none")
+
+      #log
         h4 Activity Log
         #log-area
           textarea#log-window(readonly="readonly")
@@ -48,7 +52,7 @@ html(lang="en")
 
       #info
         p.
-          Ver. 1.0.1 - Made with #[a(href="//nodejs.org") Node.js], #[a(href="//jquery.com") jQuery], #[a(href="//pugjs.org") Pug], and #[a(href="//getbootstrap.com") Bootstrap] - #[a(href="//nbcunicareers.com") NBCUniversal] in Dec-2016
+          Made with #[a(href="//nodejs.org") Node.js], #[a(href="//jquery.com") jQuery], #[a(href="//pugjs.org") Pug], and #[a(href="//getbootstrap.com") Bootstrap] - #[a(href="//nbcunicareers.com") NBCUniversal] in Dec-2016
 
     script(type="text/javascript", src="//code.jquery.com/jquery-2.2.4.min.js")
     script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js", integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa", crossorigin="anonymous")

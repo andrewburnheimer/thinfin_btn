@@ -1,6 +1,6 @@
 {
   "name": "thinfin_btn",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Thinfinity Button Panel",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

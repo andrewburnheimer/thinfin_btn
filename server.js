@@ -23,8 +23,11 @@ var typeHdrForFileExt = function(pathname){
     case ".ico":
       return "image/x-icon";
       break;
+    case ".exe":
+      return "application/x-msdownload";
+      break;
     default:
-      return "text/plain";
+      return "application/octet-stream";
   }
 };
 

@@ -35,3 +35,7 @@ a:hover {
   margin: 0 auto 0 auto;
   vertical-align: bottom;
 }
+
+.nooklink,#info {
+  margin: 25px;
+}
