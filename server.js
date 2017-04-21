@@ -5,6 +5,8 @@ var pug = require("pug");
 const querystring = require('querystring');
 var unirest = require('unirest');
 
+var VER = "1.0.2";
+
 var typeHdrForFileExt = function(pathname){
   fileExtRegExp = RegExp("\\.[^.]+$");
   fileExt = fileExtRegExp.exec(pathname)[0];
@@ -238,7 +240,7 @@ http.createServer(function(request, response) {
             console.log("Error reading facilities.json: " + err.toString());
           }
 
-          response.end(compiledFunction({ facilities: facilities }));
+          response.end(compiledFunction({ facilities: facilities, version: VER }));
         })
       } else if(err.code == "ENOENT"){
         response.statusCode = 404;

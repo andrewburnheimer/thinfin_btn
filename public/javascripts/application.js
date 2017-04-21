@@ -56,6 +56,7 @@ function updateRoomControls() {
       })
       .fail(function(data, sts) {
         logToWindow("ERROR: Received HTTP " + data.status + " " + data.statusText + " for " + nookName);
+        roomIntoUnknownState(nookName);
       });
     }
   });
@@ -187,7 +188,8 @@ function roomIntoUnknownState(name) {
 
 function logToWindow(msg){
   var d = new Date()
-  var offset = timezoneOffsetToHoursMinutes(d.getTimezoneOffset())
+  /*var offset = timezoneOffsetToHoursMinutes(d.getTimezoneOffset())*/
+  var offset = "Local";
   $('#log-window').append(d.toLocaleString() + ' ' + offset + ' - ' + msg + '\n')
   scrollToBottom();
 }
