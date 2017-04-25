@@ -5,7 +5,7 @@ var pug = require("pug");
 const querystring = require('querystring');
 var unirest = require('unirest');
 
-var VER = "1.0.2";
+var VER = "1.0.3";
 
 var typeHdrForFileExt = function(pathname){
   fileExtRegExp = RegExp("\\.[^.]+$");
@@ -27,6 +27,9 @@ var typeHdrForFileExt = function(pathname){
       break;
     case ".exe":
       return "application/x-msdownload";
+      break;
+    case ".pdf":
+      return "application/pdf";
       break;
     default:
       return "application/octet-stream";
@@ -235,6 +238,7 @@ http.createServer(function(request, response) {
             facilities = eval("(" + content + ")");
             for (var idx in facilities) {
               facilities[idx].url = facilities[idx].remoteScheme + "://" + facilities[idx].remoteHost + ":" + facilities[idx].remotePort + "/" + facilities[idx].remotePath
+              facilities[idx].userUrl = facilities[idx].remoteScheme + "://" + facilities[idx].host + ":" + facilities[idx].remotePort + "/"
             }
           } else {
             console.log("Error reading facilities.json: " + err.toString());
