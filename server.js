@@ -5,11 +5,11 @@ var pug = require("pug");
 const querystring = require('querystring');
 var unirest = require('unirest');
 
-var VER = "1.0.3";
+var VER = "1.0.4";
 
 var typeHdrForFileExt = function(pathname){
-  fileExtRegExp = RegExp("\\.[^.]+$");
-  fileExt = fileExtRegExp.exec(pathname)[0];
+  var fileExtRegExp = RegExp("\\.[^.]+$");
+  var fileExt = fileExtRegExp.exec(pathname)[0];
 
   /* Thanks to https://annevankesteren.nl/2004/08/mime-types */
   switch(fileExt) {
@@ -35,6 +35,19 @@ var typeHdrForFileExt = function(pathname){
       return "application/octet-stream";
   }
 };
+
+var contDispHdrForFileExt = function(pathname){
+  var fileExtRegExp = RegExp("\\.[^.]+$");
+  var fileExt = fileExtRegExp.exec(pathname)[0];
+
+  switch(fileExt) {
+    case ".pdf":
+      return "inline; filename=" + pathname.replace("/", "");
+      break;
+    default:
+      return null;
+  }
+}
 
 http.createServer(function(request, response) {
   var headers = request.headers;
@@ -213,6 +226,11 @@ http.createServer(function(request, response) {
       if(!err) {
         response.statusCode = 200;
         response.setHeader('Content-Type', typeHdrForFileExt(pathname));
+
+        var contDisp = contDispHdrForFileExt(pathname);
+        if(contDisp) {
+          response.setHeader('Content-Disposition', contDisp);
+        }
         response.end(content);
       } else if(err.code == "ENOENT"){
         response.statusCode = 404;
