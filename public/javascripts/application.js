@@ -1,4 +1,5 @@
 var freeBusyTogglerTimerId;
+var restartServiceTogglerTimerId;
 
 $(window).load(function(){
   $(".noscriptmsg").hide();
@@ -23,6 +24,20 @@ $(window).load(function(){
     } else {
       clearTimeout(freeBusyTogglerTimerId);
       allFreeUpNooksIntoBusyState();
+    }
+    });
+
+  $('#resto').change(function() {
+    if($(this).prop('checked')){
+      allAvailNooksIntoReleaseState();
+
+      restartServiceTogglerTimerId = setTimeout(function myFunction() {
+        $('#resto').bootstrapToggle('off');
+        allReleaseNooksIntoAvailState();
+        }, 5000);
+    } else {
+      clearTimeout(restartServiceTogglerTimerId);
+      allReleaseNooksIntoAvailState();
     }
     });
 
@@ -116,6 +131,56 @@ function allFreeUpNooksIntoBusyState() {
   })
 };
 
+function allAvailNooksIntoReleaseState() {
+  $.each($('.nooks.available'), function(index, nookBtn) {
+    var nookAnchor = $(nookBtn).parent();
+    var nookBtnSpan = $(nookBtn).children("span");
+    var nookName = nookBtnSpan.text();
+    nookAnchor.unbind('click');
+    nookAnchor.on('click', function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: "/roomResetThinfinityServices.json" + '?' + $.param({"room": nookName}),
+        type: "DELETE",
+        success: function(result) {
+          logToWindow("Reset Thinfinity services in " + nookName);
+        },
+        error: function(data, sts) { 
+          logToWindow("ERROR: Received HTTP " + data.status + " " + data.statusText + " when freeing-up " + nookName);
+        }
+      });
+    });
+
+    $(nookBtn).removeClass('btn-success');
+    $(nookBtn).removeClass('available');
+    $(nookBtn).addClass('release');
+    $(nookBtn).addClass('btn-info');
+    $(nookBtn).prop("title", "Restart Thinfinity services in this facility");
+    $(nookBtn).prop('disabled', false);
+
+    $(nookBtnSpan).text("Restart " + $(nookBtnSpan).text());
+  })
+};
+
+function allReleaseNooksIntoAvailState() {
+  $.each($('.nooks.release'), function(index, roomBtn) {
+    var roomAnchor = $(roomBtn).parent();
+    roomAnchor.unbind('click');
+
+    roomButton = roomAnchor.children("button");
+    roomButton.removeClass('release');
+    roomButton.addClass('available');
+    roomButton.removeClass('btn-info');
+    roomButton.addClass('btn-success');
+    roomButton.prop("title", "Available");
+    var roomBtnSpan = $(roomButton).children("span");
+    var existing = $(roomBtnSpan).text();
+    existing = existing.replace("Restart ", "");
+    $(roomBtnSpan).text(existing);
+  })
+
+};
+
 function roomIntoBusyState(name) {
   var roomAnchor = $("#facility-list li :contains(" + name + ")").first()
   roomAnchor.on('click', function(e) { e.preventDefault(); });
@@ -142,13 +207,13 @@ function roomIntoBusyState(name) {
 
 function roomIntoAvailableState(name) {
   var roomAnchor = $("#facility-list li :contains(" + name + ")").first()
-  roomAnchor.removeClass('disabled');
-  roomAnchor.attr("aria-disabled", "false");
-  roomAnchor.removeAttr('tabindex');
-  roomAnchor.unbind('click');
-
   roomButton = roomAnchor.children("button");
-  if(!roomButton.hasClass("available")){
+  if(!roomButton.hasClass("available") && !roomButton.hasClass("release")){
+    roomAnchor.removeClass('disabled');
+    roomAnchor.attr("aria-disabled", "false");
+    roomAnchor.removeAttr('tabindex');
+    roomAnchor.unbind('click');
+
     logToWindow(name + " is now available");
 
     roomButton.removeClass('disabled');
