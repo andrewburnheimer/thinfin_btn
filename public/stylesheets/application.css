@@ -15,22 +15,19 @@ a:hover {
   text-decoration: underline;
 }
 
-#disco-spacer {
-  margin: 10px;
+.toggle-span {
+  margin-left: 10px;
 }
 
 #facility-list {
   margin: 0;
   padding: 0;
   list-style-type: none;
-}
-
-#facility-list li {
   display: inline;
 }
 
 #log-window {
-  width: 70%;
+  width: 90%;
   height: 8em;
   margin: 0 auto 0 auto;
   vertical-align: bottom;
@@ -40,6 +37,35 @@ a:hover {
   margin: 25px;
 }
 
+.section-header {
+  clear: left;
+}
+
 .nooks {
   width: 165px;
+}
+
+.legend {
+  width: 125px;
+}
+
+#legend-area {
+  text-align: left;
+  border: lightgrey 1px solid;
+  padding: 5px;
+}
+
+.rule-row {
+  margin-right: 0px;
+  margin-left: 0px;
+}
+
+.row-rule {
+  width: 85%;
+  border-color: lightgrey;
+  margin: 3px;
+}
+
+h4 {
+  padding-top: 20px;
 }

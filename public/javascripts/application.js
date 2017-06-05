@@ -182,7 +182,7 @@ function allReleaseNooksIntoAvailState() {
 };
 
 function roomIntoBusyState(name) {
-  var roomAnchor = $("#facility-list li :contains(" + name + ")").first()
+  var roomAnchor = $("#facility-list :contains(" + name + ")").first()
   roomAnchor.on('click', function(e) { e.preventDefault(); });
   roomAnchor.addClass('disabled');
   roomAnchor.attr('aria-disabled', 'true');
@@ -206,7 +206,7 @@ function roomIntoBusyState(name) {
 
 
 function roomIntoAvailableState(name) {
-  var roomAnchor = $("#facility-list li :contains(" + name + ")").first()
+  var roomAnchor = $("#facility-list :contains(" + name + ")").first()
   roomButton = roomAnchor.children("button");
   if(!roomButton.hasClass("available") && !roomButton.hasClass("release")){
     roomAnchor.removeClass('disabled');
@@ -229,7 +229,7 @@ function roomIntoAvailableState(name) {
 };
 
 function roomIntoUnknownState(name) {
-  var roomAnchor = $("#facility-list li :contains(" + name + ")").first()
+  var roomAnchor = $("#facility-list :contains(" + name + ")").first()
   roomAnchor.on('click', function(e) { e.preventDefault(); });
   roomAnchor.addClass('disabled');
   roomAnchor.attr('aria-disabled', 'true');

@@ -4,7 +4,7 @@ html(lang="en")
     meta(charset="utf-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1")
-    - title = ["30 Rock 6th Floor Remote Studio Services", "Admin"]
+    - title = ["Studio Sentry", "Admin"]
     title=  title.join(" | ")
     link(href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u", crossorigin="anonymous")
     link(href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css", rel="stylesheet")
@@ -32,30 +32,77 @@ html(lang="en")
               = "on the server."
 
           else
-            ul#facility-list
-              each facility in facilities
-                li
+            .col-xs-2.col-md-0
+            .col-xs-8.col-md-12
+              #facility-list
+                each facility in facilities
                   a.nooklink.disabled(href=facility.url, aria-disabled="true", tabindex="-1")
-                    button.nooks.unknown.btn-lg.btn.btn-warning.disabled(name=facility.name, title="Unable to reach StudioSentry", disabled="disabled")
+                    button.nooks.unknown.btn-lg.btn.btn-warning.disabled(name=facility.name, title="Unable to reach Studio Sentry", disabled="disabled")
                       span #{facility.name}
-              li
-                span#disco-spacer
+              span.toggle-span
                 input#disco(type="checkbox", data-toggle="toggle", data-onstyle="danger", data-on="Disconnect<br>Enabled", data-off="Disconnect")
-              li
-                span#disco-spacer
+              span.toggle-span
                 input#resto(type="checkbox", data-toggle="toggle", data-onstyle="danger", data-on="Release<br>License", data-off="Release<br>License")
+            .col-xs-2.col-md-0
 
+      .section-header#help
+        h4 Legend
+        #legend
+          .col-xs-2
+          .col-xs-8#legend-area
+            .row
+              .col-xs-12.col-sm-4.col-md-3
+                button.legend.unknown.btn.btn-success
+                  span Room Available
+              .col-sm-8.col-md-9
+                p The room is available for use.
+            .row.rule-row
+              hr.row-rule
+            .row
+              .col-xs-12.col-sm-4.col-md-3
+                button.legend.unknown.btn.btn-danger.disabled(disabled="disabled")
+                  span Room Busy
+              .col-sm-8.col-md-9
+                p The room is currently occupied. Use the <b>Disconnect</b> toggle, see <b>Free up...</b> below.
+            .row.rule-row
+              hr.row-rule
+            .row
+              .col-xs-12.col-sm-4.col-md-3
+                button.legend.unknown.btn.btn-danger
+                  span Free up...
+              .col-sm-8.col-md-9
+                p Click the <b>Free up...</b> button to force the room available again.
+            .row.rule-row
+              hr.row-rule
+            .row
+              .col-xs-12.col-sm-4.col-md-3
+                button.legend.unknown.btn.btn-info
+                  span Restart Service
+              .col-sm-7.col-md-9
+                p When all all else fails, use the <b>Release License</b> toggle, and click the <b>Restart...</b> button to restart the Room PC service.
+            .row.rule-row
+              hr.row-rule
+            .row
+              .col-xs-12.col-sm-4.col-md-3
+                button.legend.unknown.btn.btn-warning.disabled(disabled="disabled")
+                  span Status Unknown
+              .col-sm-7.col-md-9
+                p Studio Sentry is not able to communicate with the Room PC. Please contact Studio Maintenance.
+          .col-xs-2
 
-      #log
+      .section-header#log
         h4 Activity Log
-        #log-area
-          textarea#log-window(readonly="readonly")
-          label.btn.btn-default#copy-btn(title="Copy to clipboard" for="log-window")
-            i.glyphicon.glyphicon-copy
+        .col-xs-2
+        .col-xs-8
+          #log-area
+            textarea#log-window(readonly="readonly")
+            label.btn.btn-default#copy-btn(title="Copy to clipboard" for="log-window")
+              i.glyphicon.glyphicon-copy
 
-        a(href="/help.pdf") Need Help?
+          a(href="/help.pdf") Need Help?
+        .col-xs-2
 
-      #info
+      .section-header#info
         p.
           Ver. #{version} - Made with #[a(href="//nodejs.org") Node.js], #[a(href="//jquery.com") jQuery], #[a(href="//pugjs.org") Pug], and #[a(href="//getbootstrap.com") Bootstrap] - #[a(href="//nbcunicareers.com") NBCUniversal] in Dec-2016
 
