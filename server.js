@@ -5,7 +5,7 @@ var pug = require("pug");
 const querystring = require('querystring');
 var unirest = require('unirest');
 
-var VER = "1.0.7";
+var VER = "1.0.8";
 
 var typeHdrForFileExt = function(pathname){
   var fileExtRegExp = RegExp("\\.[^.]+$");
@@ -334,7 +334,7 @@ http.createServer(function(request, response) {
     });
   }
 
-}).listen(process.env.PORT || 8080);
+}).listen(process.env.SERVER_PORT || 8080);
 
 
 function notFoundErrorResponse(pageType){

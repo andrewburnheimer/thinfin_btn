@@ -1,4 +1,4 @@
-thinfin_btn
+thinfin\_btn
 ============
 
 More user-friendly gateway into Thinfinity Remote Desktop Server systems
@@ -13,21 +13,33 @@ Commercial and private use are permitted. Distribution, modification, and sublic
 Install
 -------
 
-Setup the node.js environment on the host with <code># apt-get update && apt-get install nodejs npm node-semver</code> as root.
+Perform the following commands as root.
 
-Clone, or download a ZIP file from the github.inbcu.com repository site.
+Setup the node.js environment on the host with <code># apt-get update && apt-get install nodejs npm node-semver</code>
 
-Change into that directory and fulfill the application requirements with <code>$ npm install</code>
+Fix the Ununtu naming error <code># ln -fs /usr/bin/nodejs /usr/local/bin/node</code>
 
-Fulfill the startup requirements with <code>$ sudo npm install forever -g</code>
+Create the application directory <code># mkdir -p /opt/app</code>
 
-Place the startup script <code>$ sudo cp init\_d-thinfin\_btn /etc/init.d/thinfin\_btn</code>
+Change into that directory and clone this repo., or download a ZIP file and inflate it there.
 
-Update the system service definitions <code>$ sudo update-rc.d thinfin\_btn defaults</code>
+Set the ownership, as appropriate, <code># chown -R administrator:administrator /opt/app/thinfin\_btn</code>
+
+Fulfill the startup requirements with <code># npm install forever -g</code>
+
+Change into that directory and place the startup script <code># cd /opt/app/thinfin\_btn; cp init\_d-thinfin\_btn /etc/init.d/thinfin\_btn</code>
+
+Update the system service definitions <code># update-rc.d thinfin\_btn defaults</code>
+
+Create the runtime directory <code># mkdir -p /opt/run/forever/</code>
+
+As the application user (not root), change into that directory and fulfill the application requirements with <code>$ npm install</code>
 
 
 Startup
 -------
+
+In the application directory, <code>$ cp example\_facilities.json facilities.json; nano facilities.json</code>, as appropriate.
 
 Start the web server with <code>$ sudo service thinfin\_btn start</code>
 
