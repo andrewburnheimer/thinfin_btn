@@ -19,21 +19,18 @@ Clone, or download a ZIP file from the github.inbcu.com repository site.
 
 Change into that directory and fulfill the application requirements with <code>$ npm install</code>
 
+Fulfill the startup requirements with <code>$ sudo npm install forever -g</code>
+
+Place the startup script <code>$ sudo cp init\_d-thinfin\_btn /etc/init.d/thinfin\_btn</code>
+
+Update the system service definitions <code>$ sudo update-rc.d thinfin\_btn defaults</code>
+
 
 Startup
 -------
 
-1. Log into the server, and create a session that can be disconnected from: <code>screen</code>
+Start the web server with <code>$ sudo service thinfin\_btn start</code>
 
-2. Become the application user: <code>sudo su - pi</code>
-
-3. Change into the application directory: <code>cd /opt/app/thinfin_btn</code>
-
-4. Start the web server with <code>nodejs server.js</code>
-
-6. Disconnect from the session by pressing: CTRL-A, then the D key
-
-7. Resume the session later with: <code>screen -r</code>
 
 Usage
 -----
@@ -41,13 +38,11 @@ Usage
 See web interface.
 
 
-
 Contribute
 ----------
 
 Please fork the GitHub project (https://github.inbcu.com/206443820)
 make any changes, commit and push to GitHub, and submit a pull request.
-
 
 
 Contact
