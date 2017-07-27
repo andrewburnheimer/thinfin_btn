@@ -5,7 +5,7 @@ var pug = require("pug");
 const querystring = require('querystring');
 var unirest = require('unirest');
 
-var VER = "1.0.6";
+var VER = "1.0.7";
 
 var typeHdrForFileExt = function(pathname){
   var fileExtRegExp = RegExp("\\.[^.]+$");

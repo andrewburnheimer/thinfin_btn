@@ -34,7 +34,8 @@ a:hover {
 }
 
 .nooklink,#info {
-  margin: 25px;
+  margin-left: 25px;
+  padding-top: 25px;
 }
 
 .section-header {
