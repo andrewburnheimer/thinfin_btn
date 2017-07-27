@@ -334,7 +334,7 @@ http.createServer(function(request, response) {
     });
   }
 
-}).listen(process.env.SERVER_PORT || 8080);
+}).listen(process.env.SERVER_PORT || 8080, process.env.SERVER_IFACE || '0.0.0.0');
 
 
 function notFoundErrorResponse(pageType){
