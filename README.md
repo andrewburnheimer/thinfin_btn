@@ -17,7 +17,7 @@ Perform the following commands as root.
 
 Setup the node.js environment on the host with <code># apt-get update && apt-get install nodejs npm node-semver</code>
 
-Fix the Ununtu naming error <code># ln -fs /usr/bin/nodejs /usr/local/bin/node</code>
+Fix the Ubuntu naming error <code># ln -fs /usr/bin/nodejs /usr/local/bin/node</code>
 
 Create the application directory <code># mkdir -p /opt/app</code>
 
