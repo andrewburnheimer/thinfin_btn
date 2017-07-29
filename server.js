@@ -4,8 +4,18 @@ var url = require("url");
 var pug = require("pug");
 const querystring = require('querystring');
 var unirest = require('unirest');
+require('console-stamp')(console, "UTC:yyyy-mm-dd\'T\'HH:MM:ss.l\'Z\'");
+/* Slammed the following into ...node_modules/forever/lib/forever.js for consistency
+  //
+  // Setup timestamp to event logger
+  //
+  forever.out.transports.console.timestamp = function() {
+    var d = new Date();
+    return '[' + d.toISOString() + ']';
+  }
+*/
 
-var VER = "1.0.8";
+var VER = "1.0.9";
 
 var typeHdrForFileExt = function(pathname){
   var fileExtRegExp = RegExp("\\.[^.]+$");
