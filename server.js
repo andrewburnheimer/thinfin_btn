@@ -4,18 +4,30 @@ var url = require("url");
 var pug = require("pug");
 const querystring = require('querystring');
 var unirest = require('unirest');
-require('console-stamp')(console, "UTC:yyyy-mm-dd\'T\'HH:MM:ss.l\'Z\'");
+require('console-stamp')(console, "yyyy-mm-dd\'T\'HH:MM:ss.lZ");
 /* Slammed the following into ...node_modules/forever/lib/forever.js for consistency
   //
   // Setup timestamp to event logger
   //
+  // forever.out.transports.console.timestamp = forever.config.get('timestamp') === 'true';
   forever.out.transports.console.timestamp = function() {
     var d = new Date();
-    return '[' + d.toISOString() + ']';
+    var zoneName = 'LOC';
+    if ( d.getTimezoneOffset() == 240 ) { zoneName = 'EDT'; }
+    else if ( d.getTimezoneOffset() == 300 ) { zoneName = 'EST'; }
+
+    // return '[' + d.toISOString() + ']'; 
+    return '[' + ( 1900 + d.getYear() ) + '-' +
+      ("00" + ( 1 + d.getMonth())).slice(-2) + '-' +
+      ("00" + d.getDate()).slice(-2) + 'T' +
+      ("00" + d.getHours()).slice(-2) + ':' +
+      ("00" + d.getMinutes()).slice(-2) + ':' +
+      ("00" + d.getSeconds()).slice(-2) + '.' +
+      ("000" + d.getMilliseconds()).slice(-3) + zoneName + ']';
   }
 */
 
-var VER = "1.0.9";
+var VER = "1.0.10";
 
 var typeHdrForFileExt = function(pathname){
   var fileExtRegExp = RegExp("\\.[^.]+$");
